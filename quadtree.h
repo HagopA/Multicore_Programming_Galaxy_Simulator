@@ -1,22 +1,40 @@
 #pragma once
 #include <vector>
+using namespace std;
 
-struct Particle {
-	double mass = 0.0;
-	double centerOfMass = 0.0;
-};
+const enum Quadrant { NE = 1, NW, SW, SE, NONE };
 
-struct Node {
-	const enum Quadrant {NE, NW, SW, SE};
-	int numOfParticles = 0;
-	Particle aParticle;
-};
-
-class QuadTree {
-	private:
-
+class Particle 
+{
 	public:
-		void insertToNode(Node* newParticle);
+		Particle(double x=0, double y=0);
+		double x;
+		double y;
+		double force;
+		double massOfParticle;
+		Quadrant aQuadrant;
+};
+
+class Node
+{
+	public:
+		Node();
+		vector<Particle*> particlesInNode;
+		double mass;
+		double centerOfMass;
+		double posCenterOfMassX;
+		double posCenterOfMassY;
+		double massCM;
+		bool subNode;
+		int numOfParticles;
+};
+
+class QuadTree 
+{
+	public:
+		QuadTree();
+		Node* root;
+		const int numOfParticlesToAdd = 30;
+		void insertToNode(Particle* p, Node* n);
 		void buildTree();
-		void resetTree();
 };
